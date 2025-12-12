@@ -129,20 +129,6 @@ export default function ChatBot() {
     'Is it free?',
   ];
 
-  const handleQuickQuestion = (question: string) => {
-    setInputValue(question);
-    // Use setTimeout to ensure state is updated before sending
-    setTimeout(() => {
-      const input = inputRef.current;
-      if (input) {
-        input.focus();
-        // Trigger send after a brief delay
-        const event = new KeyboardEvent('keypress', { key: 'Enter' });
-        input.dispatchEvent(event);
-      }
-    }, 100);
-  };
-
   return (
     <>
       {/* Chat Button */}
