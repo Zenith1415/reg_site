@@ -25,7 +25,11 @@ connectDatabase().catch((err) => {
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: [
+    process.env.FRONTEND_URL || 'http://localhost:3000',
+    'https://reg-site.onrender.com',
+    /\.vercel\.app$/,  // Allow all Vercel preview deployments
+  ],
   credentials: true,
 }));
 app.use(express.json());

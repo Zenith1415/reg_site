@@ -22,9 +22,11 @@ const INITIAL_MESSAGE: Message = {
   timestamp: new Date(),
 };
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+
 async function getAIResponse(message: string, history: ChatHistory[]): Promise<string> {
   try {
-    const response = await axios.post('/api/chat', {
+    const response = await axios.post(`${API_BASE_URL}/chat`, {
       message,
       history,
     });
