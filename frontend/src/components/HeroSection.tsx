@@ -8,7 +8,6 @@ interface HeroSectionProps {
 export default function HeroSection({ onStartRegistration }: HeroSectionProps) {
   return (
     <section className="relative overflow-hidden py-20 lg:py-32">
-      {/* Background Elements */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-20 left-10 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float" />
         <div className="absolute top-40 right-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float" style={{ animationDelay: '2s' }} />
@@ -17,7 +16,6 @@ export default function HeroSection({ onStartRegistration }: HeroSectionProps) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -28,7 +26,6 @@ export default function HeroSection({ onStartRegistration }: HeroSectionProps) {
             <span className="text-sm font-medium text-indigo-700 dark:text-indigo-300">Registration Now Open</span>
           </motion.div>
 
-          {/* Main Heading */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -42,7 +39,6 @@ export default function HeroSection({ onStartRegistration }: HeroSectionProps) {
             </span>
           </motion.h1>
 
-          {/* Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -53,7 +49,6 @@ export default function HeroSection({ onStartRegistration }: HeroSectionProps) {
             simple, fast, and verified. Get your unique Team ID in minutes.
           </motion.p>
 
-          {/* CTA Button */}
           <motion.button
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -67,7 +62,6 @@ export default function HeroSection({ onStartRegistration }: HeroSectionProps) {
             <ArrowRight className="w-5 h-5" />
           </motion.button>
 
-          {/* Features Grid */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -91,7 +85,6 @@ export default function HeroSection({ onStartRegistration }: HeroSectionProps) {
             />
           </motion.div>
 
-          {/* Trust Indicators */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

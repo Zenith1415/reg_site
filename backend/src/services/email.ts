@@ -1,7 +1,6 @@
 import nodemailer from 'nodemailer';
 import { TeamRegistration } from '../types/index.js';
 
-// Create reusable transporter
 let transporter: nodemailer.Transporter | null = null;
 
 async function getTransporter(): Promise<nodemailer.Transporter> {
@@ -12,7 +11,6 @@ async function getTransporter(): Promise<nodemailer.Transporter> {
   const smtpUser = process.env.SMTP_USER?.trim();
   const smtpPass = process.env.SMTP_PASS?.trim();
 
-  // If no SMTP credentials provided, create Ethereal test account
   if (!smtpUser || !smtpPass) {
     console.log('📧 No SMTP credentials found. Creating Ethereal test email account...');
     try {
@@ -46,13 +44,10 @@ async function getTransporter(): Promise<nodemailer.Transporter> {
     }
   }
 
-  console.log(`📧 Using SMTP server: ${process.env.SMTP_HOST}`);
+  console.log(`📧 Using Gmail Service via user: ${smtpUser}`);
 
-  // Use provided SMTP credentials
   transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: false,
+    service: 'gmail',
     auth: {
       user: smtpUser,
       pass: smtpPass,
@@ -62,9 +57,6 @@ async function getTransporter(): Promise<nodemailer.Transporter> {
   return transporter;
 }
 
-/**
- * Send confirmation email to team leader
- */
 export async function sendConfirmationEmail(registration: TeamRegistration): Promise<void> {
   const transport = await getTransporter();
 
@@ -255,7 +247,6 @@ The Team Registration Platform
 
   const info = await transport.sendMail(mailOptions);
   
-  // Log preview URL for Ethereal emails
   const previewUrl = nodemailer.getTestMessageUrl(info);
   if (previewUrl) {
     console.log(`📧 Preview email at: ${previewUrl}`);

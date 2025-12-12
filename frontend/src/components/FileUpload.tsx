@@ -25,10 +25,7 @@ export default function FileUpload({ file, onFileChange }: FileUploadProps) {
   const verifyIdCard = useCallback((file: File) => {
     setVerificationStatus('verifying');
     
-    // Simulate ID verification process
     setTimeout(() => {
-      // In production, this would call an actual verification API
-      // For demo, we verify based on file size and type
       const isValidImage = file.type.startsWith('image/');
       const isReasonableSize = file.size > 10000 && file.size < 10000000; // 10KB - 10MB
       
@@ -56,7 +53,6 @@ export default function FileUpload({ file, onFileChange }: FileUploadProps) {
     onFileChange(file);
     setVerificationStatus('idle');
 
-    // Create preview for images
     if (file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -67,7 +63,6 @@ export default function FileUpload({ file, onFileChange }: FileUploadProps) {
       setPreview(null);
     }
 
-    // Start verification
     verifyIdCard(file);
   }, [onFileChange, verifyIdCard]);
 
@@ -149,7 +144,6 @@ export default function FileUpload({ file, onFileChange }: FileUploadProps) {
             className="relative bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-4 border border-slate-200 dark:border-slate-700"
           >
             <div className="flex items-start gap-4">
-              {/* Preview */}
               <div className="w-24 h-24 rounded-xl bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 overflow-hidden flex-shrink-0">
                 {preview ? (
                   <img src={preview} alt="ID Preview" className="w-full h-full object-cover" />
@@ -160,14 +154,12 @@ export default function FileUpload({ file, onFileChange }: FileUploadProps) {
                 )}
               </div>
 
-              {/* File Info */}
               <div className="flex-1 min-w-0">
                 <p className="font-medium text-slate-700 dark:text-slate-300 truncate">{file.name}</p>
                 <p className="text-sm text-slate-500 dark:text-slate-500">
                   {(file.size / 1024 / 1024).toFixed(2)} MB
                 </p>
                 
-                {/* Verification Status */}
                 <div className="mt-3">
                   {verificationStatus === 'verifying' && (
                     <div className="flex items-center gap-2 text-amber-600">
@@ -198,7 +190,6 @@ export default function FileUpload({ file, onFileChange }: FileUploadProps) {
                 </div>
               </div>
 
-              {/* Remove Button */}
               <button
                 onClick={removeFile}
                 className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
@@ -210,7 +201,6 @@ export default function FileUpload({ file, onFileChange }: FileUploadProps) {
         )}
       </AnimatePresence>
 
-      {/* Accepted formats */}
       <div className="flex flex-wrap gap-2 justify-center">
         {['JPEG', 'PNG', 'WebP', 'PDF'].map((format) => (
           <span

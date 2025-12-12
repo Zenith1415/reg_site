@@ -12,7 +12,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const router = Router();
 
-// Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, '../../uploads'));
@@ -26,7 +25,7 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
   limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB
+    fileSize: 10 * 1024 * 1024,
   },
   fileFilter: (req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
@@ -38,15 +37,12 @@ const upload = multer({
   },
 });
 
-// In-memory fallback storage (used when MongoDB is not connected)
 const inMemoryRegistrations: Map<string, TeamRegistration> = new Map();
 
-// Register a new team
 router.post('/register', upload.single('idCard'), async (req: Request, res: Response) => {
   try {
     const { teamName, teamLeaderName, teamLeaderEmail, teamMembers, recaptchaToken } = req.body;
 
-    // Validate required fields
     if (!teamName || !teamLeaderName || !teamLeaderEmail) {
       return res.status(400).json({
         success: false,
@@ -54,7 +50,6 @@ router.post('/register', upload.single('idCard'), async (req: Request, res: Resp
       });
     }
 
-    // Verify reCAPTCHA
     const isRecaptchaValid = await verifyRecaptcha(recaptchaToken);
     if (!isRecaptchaValid) {
       return res.status(400).json({
@@ -63,7 +58,6 @@ router.post('/register', upload.single('idCard'), async (req: Request, res: Resp
       });
     }
 
-    // Parse team members
     let parsedMembers: TeamMember[] = [];
     try {
       parsedMembers = JSON.parse(teamMembers || '[]');
@@ -71,11 +65,9 @@ router.post('/register', upload.single('idCard'), async (req: Request, res: Resp
       parsedMembers = [];
     }
 
-    // Generate unique team ID
     const teamId = generateTeamId();
     const createdAt = new Date();
 
-    // Create registration data
     const registrationData = {
       teamId,
       teamName,
@@ -90,13 +82,11 @@ router.post('/register', upload.single('idCard'), async (req: Request, res: Resp
 
     let savedTeam;
 
-    // Save to MongoDB if connected, otherwise use in-memory storage
     if (isConnected()) {
       const team = new Team(registrationData);
       savedTeam = await team.save();
       console.log(`✅ Team saved to MongoDB: ${teamId}`);
     } else {
-      // Fallback to in-memory storage
       const registration: TeamRegistration = {
         ...registrationData,
         createdAt: createdAt.toISOString(),
@@ -106,7 +96,6 @@ router.post('/register', upload.single('idCard'), async (req: Request, res: Resp
       console.log(`⚠️ Team saved to memory (MongoDB not connected): ${teamId}`);
     }
 
-    // Send confirmation email
     const emailData: TeamRegistration = {
       teamId,
       teamName,
@@ -125,7 +114,6 @@ router.post('/register', upload.single('idCard'), async (req: Request, res: Resp
       console.error('Failed to send confirmation email:', emailError);
     }
 
-    // Return success response
     res.status(201).json({
       success: true,
       data: {
@@ -147,7 +135,6 @@ router.post('/register', upload.single('idCard'), async (req: Request, res: Resp
   }
 });
 
-// Verify reCAPTCHA endpoint
 router.post('/verify-recaptcha', async (req: Request, res: Response) => {
   try {
     const { token } = req.body;
@@ -173,19 +160,16 @@ router.post('/verify-recaptcha', async (req: Request, res: Response) => {
   }
 });
 
-// Get team by ID
 router.get('/team/:teamId', async (req: Request, res: Response) => {
   const { teamId } = req.params;
 
   try {
     let registration;
 
-    // Try MongoDB first if connected
     if (isConnected()) {
       registration = await Team.findOne({ teamId }).lean();
     }
 
-    // Fallback to in-memory storage
     if (!registration) {
       registration = inMemoryRegistrations.get(teamId);
     }

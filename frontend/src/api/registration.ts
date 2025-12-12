@@ -1,12 +1,10 @@
 import axios from 'axios';
 import { RegistrationFormData, TeamRegistrationData, ApiResponse } from '../types';
 
-// Use environment variable for production, fallback to local for development
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 export async function registerTeam(formData: RegistrationFormData): Promise<ApiResponse<TeamRegistrationData>> {
   try {
-    // Create FormData for file upload
     const data = new FormData();
     data.append('teamName', formData.teamName);
     data.append('teamLeaderName', formData.teamLeaderName);

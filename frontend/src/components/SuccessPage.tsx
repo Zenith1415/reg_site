@@ -23,7 +23,6 @@ export default function SuccessPage({ teamData, onBackToHome }: SuccessPageProps
           transition={{ duration: 0.5 }}
           className="card p-8 text-center"
         >
-          {/* Success Animation */}
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -51,14 +50,12 @@ export default function SuccessPage({ teamData, onBackToHome }: SuccessPageProps
             Your team has been registered successfully. A confirmation email has been sent to your team leader.
           </motion.p>
 
-          {/* Team ID Card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
             className="bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl p-6 text-white mb-8 relative overflow-hidden"
           >
-            {/* Background Pattern */}
             <div className="absolute inset-0 opacity-10">
               <div className="absolute top-0 left-0 w-40 h-40 bg-white rounded-full -translate-x-1/2 -translate-y-1/2" />
               <div className="absolute bottom-0 right-0 w-60 h-60 bg-white rounded-full translate-x-1/2 translate-y-1/2" />
@@ -88,7 +85,6 @@ export default function SuccessPage({ teamData, onBackToHome }: SuccessPageProps
             </div>
           </motion.div>
 
-          {/* Email Notification */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -104,7 +100,6 @@ export default function SuccessPage({ teamData, onBackToHome }: SuccessPageProps
             </div>
           </motion.div>
 
-          {/* Team Details Summary */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -127,7 +122,6 @@ export default function SuccessPage({ teamData, onBackToHome }: SuccessPageProps
             </div>
           </motion.div>
 
-          {/* Action Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

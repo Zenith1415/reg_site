@@ -13,7 +13,6 @@ interface ChatRequest {
   history?: ChatMessage[];
 }
 
-// Chat endpoint
 router.post('/', async (req: Request, res: Response) => {
   try {
     const { message, history = [] } = req.body as ChatRequest;
@@ -25,7 +24,6 @@ router.post('/', async (req: Request, res: Response) => {
       });
     }
 
-    // Get response from Gemini
     const response = await getChatResponse(message, history);
 
     res.json({

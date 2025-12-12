@@ -40,7 +40,7 @@ function initializeGemini() {
   try {
     genAI = new GoogleGenerativeAI(apiKey);
     model = genAI.getGenerativeModel({ 
-      model: 'gemini-1.5-flash',
+      model: 'gemini-2.0-flash',
       systemInstruction: SYSTEM_PROMPT,
     });
     console.log('✅ Gemini AI initialized successfully');
@@ -51,22 +51,37 @@ function initializeGemini() {
   }
 }
 
-// Fallback responses when API is not available
 const FALLBACK_RESPONSES: Record<string, string> = {
-  'register': "To register your team:\n\n1️⃣ Click 'Start Registration'\n2️⃣ Complete the reCAPTCHA verification\n3️⃣ Enter your team details\n4️⃣ Add team members\n5️⃣ Upload your ID card\n\nYou'll receive a confirmation email with your unique Team ID!",
+  'register': "To register your team:\n\n1️⃣ Click 'Start Registration'\n2️⃣ Complete the reCAPTCHA verification\n3️⃣ Enter your team details\n4️⃣ Add team members (1-10 members)\n5️⃣ Upload your ID card\n\nYou'll receive a confirmation email with your unique Team ID!",
   'id': "For ID verification, you can upload:\n\n📄 Government-issued ID\n📄 Driver's license\n📄 Passport\n📄 Student ID\n\nAccepted formats: JPEG, PNG, WebP, PDF (max 10MB)",
   'help': "I can help you with:\n\n🔹 Registration process\n🔹 ID verification\n🔹 Team management\n🔹 Email confirmation\n🔹 Technical issues\n\nJust ask your question!",
-  'default': "I'm here to help with your team registration! You can ask me about:\n\n• How to register\n• ID verification\n• Team members\n• Email confirmation\n\nWhat would you like to know?",
+  'free': "Yes! ✨ Registration is completely FREE! There are no hidden charges. Simply complete the registration form and you're all set.",
+  'email': "After successful registration, a confirmation email will be sent to the team leader's email address. It includes:\n\n📧 Your unique Team ID\n📧 Registration details\n📧 Team member list\n\nCheck your spam folder if you don't see it!",
+  'members': "You can add 1-10 team members during registration.\n\nFor each member, you'll need:\n• Full name\n• Email address\n• Role (optional)\n\nYou can always start with fewer members!",
+  'time': "Registration typically takes just 2-3 minutes! ⚡\n\nYou'll need:\n• Team name\n• Leader's details\n• Member information\n• A valid ID card",
+  'default': "I'm here to help with your team registration! You can ask me about:\n\n• How to register\n• ID verification requirements\n• Team members\n• Email confirmation\n• Whether it's free\n\nWhat would you like to know?",
 };
 
 function getFallbackResponse(message: string): string {
   const lowerMessage = message.toLowerCase();
   
-  if (lowerMessage.includes('register') || lowerMessage.includes('sign up')) {
+  if (lowerMessage.includes('register') || lowerMessage.includes('sign up') || lowerMessage.includes('how do i')) {
     return FALLBACK_RESPONSES['register'];
   }
-  if (lowerMessage.includes('id') || lowerMessage.includes('document') || lowerMessage.includes('upload')) {
+  if (lowerMessage.includes('id') || lowerMessage.includes('document') || lowerMessage.includes('upload') || lowerMessage.includes('verify')) {
     return FALLBACK_RESPONSES['id'];
+  }
+  if (lowerMessage.includes('free') || lowerMessage.includes('cost') || lowerMessage.includes('price') || lowerMessage.includes('pay')) {
+    return FALLBACK_RESPONSES['free'];
+  }
+  if (lowerMessage.includes('email') || lowerMessage.includes('confirm')) {
+    return FALLBACK_RESPONSES['email'];
+  }
+  if (lowerMessage.includes('member') || lowerMessage.includes('team') || lowerMessage.includes('people')) {
+    return FALLBACK_RESPONSES['members'];
+  }
+  if (lowerMessage.includes('time') || lowerMessage.includes('long') || lowerMessage.includes('quick')) {
+    return FALLBACK_RESPONSES['time'];
   }
   if (lowerMessage.includes('help')) {
     return FALLBACK_RESPONSES['help'];
@@ -85,24 +100,20 @@ export async function getChatResponse(
   message: string, 
   conversationHistory: Array<{ role: 'user' | 'model'; text: string }>
 ): Promise<string> {
-  // Initialize on first call
   if (!genAI && !model) {
     initializeGemini();
   }
   
-  // Use fallback if Gemini not available
   if (!model) {
     return getFallbackResponse(message);
   }
   
   try {
-    // Build chat history
     const history = conversationHistory.map(msg => ({
       role: msg.role as 'user' | 'model',
       parts: [{ text: msg.text }],
     }));
     
-    // Start chat with history
     const chat = model.startChat({
       history,
       generationConfig: {
@@ -111,7 +122,6 @@ export async function getChatResponse(
       },
     });
     
-    // Send message and get response
     const result = await chat.sendMessage(message);
     const response = result.response.text();
     

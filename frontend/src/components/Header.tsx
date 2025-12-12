@@ -18,7 +18,6 @@ export default function Header({ onLogoClick }: HeaderProps) {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <motion.button 
             onClick={onLogoClick}
             className="flex items-center gap-3 group"
@@ -33,15 +32,12 @@ export default function Header({ onLogoClick }: HeaderProps) {
             </span>
           </motion.button>
 
-          {/* Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             <NavLink icon={<Shield className="w-4 h-4" />} text="Secure" />
             <NavLink icon={<Zap className="w-4 h-4" />} text="Fast" />
           </nav>
 
-          {/* Right side controls */}
           <div className="flex items-center gap-3">
-            {/* Dark Mode Toggle */}
             <motion.button
               onClick={toggleTheme}
               className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
@@ -62,7 +58,6 @@ export default function Header({ onLogoClick }: HeaderProps) {
               </motion.div>
             </motion.button>
 
-            {/* Status Badge */}
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800">
               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-sm font-medium text-emerald-700 dark:text-emerald-400">Online</span>

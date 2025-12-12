@@ -37,7 +37,6 @@ async function getAIResponse(message: string, history: ChatHistory[]): Promise<s
     throw new Error(response.data.error);
   } catch (error) {
     console.error('Chat API error:', error);
-    // Fallback response
     return "I'm having trouble connecting right now. Please try again in a moment, or you can:\n\n• Refresh the page\n• Check our FAQ section\n• Contact support@teamreg.com";
   }
 }
@@ -80,14 +79,12 @@ export default function ChatBot() {
     setInputValue('');
     setIsTyping(true);
 
-    // Update chat history for context
     const updatedHistory: ChatHistory[] = [
       ...chatHistory,
       { role: 'user', text: currentInput }
     ];
 
     try {
-      // Get AI response
       const responseText = await getAIResponse(currentInput, chatHistory);
       
       const botResponse: Message = {
@@ -99,7 +96,6 @@ export default function ChatBot() {
       
       setMessages(prev => [...prev, botResponse]);
       
-      // Update history with bot response
       setChatHistory([
         ...updatedHistory,
         { role: 'model', text: responseText }

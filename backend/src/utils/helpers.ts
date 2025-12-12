@@ -1,9 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 
-/**
- * Generate a unique team ID
- * Format: TEAM-XXXX-XXXX (where X is alphanumeric)
- */
 export function generateTeamId(): string {
   const uuid = uuidv4().replace(/-/g, '').toUpperCase();
   const part1 = uuid.substring(0, 4);
@@ -11,9 +7,6 @@ export function generateTeamId(): string {
   return `TEAM-${part1}-${part2}`;
 }
 
-/**
- * Verify reCAPTCHA token with Google's API
- */
 export async function verifyRecaptcha(token: string): Promise<boolean> {
   if (!token) {
     return false;
@@ -21,7 +14,6 @@ export async function verifyRecaptcha(token: string): Promise<boolean> {
 
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
   
-  // In development with test keys, always return true
   if (secretKey === '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe') {
     console.log('🔑 Using reCAPTCHA test keys - verification always passes');
     return true;
@@ -49,17 +41,11 @@ export async function verifyRecaptcha(token: string): Promise<boolean> {
   }
 }
 
-/**
- * Validate email format
- */
 export function isValidEmail(email: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
 
-/**
- * Format date for display
- */
 export function formatDate(date: Date): string {
   return date.toLocaleDateString('en-US', {
     year: 'numeric',

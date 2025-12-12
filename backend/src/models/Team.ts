@@ -77,16 +77,13 @@ const TeamSchema = new Schema<ITeam>(
   }
 );
 
-// Index for faster queries
 TeamSchema.index({ teamLeaderEmail: 1 });
 TeamSchema.index({ createdAt: -1 });
 
-// Virtual for member count
 TeamSchema.virtual('memberCount').get(function () {
   return this.teamMembers.length;
 });
 
-// Method to get public data (without sensitive info)
 TeamSchema.methods.toPublicJSON = function () {
   return {
     teamId: this.teamId,

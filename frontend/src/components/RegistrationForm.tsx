@@ -135,7 +135,6 @@ export default function RegistrationForm({ onSuccess, onBack }: RegistrationForm
   return (
     <section className="py-12 px-4">
       <div className="max-w-3xl mx-auto">
-        {/* Back Button */}
         <motion.button
           onClick={onBack}
           className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 mb-8 transition-colors"
@@ -145,10 +144,8 @@ export default function RegistrationForm({ onSuccess, onBack }: RegistrationForm
           <span className="text-sm font-medium">Back to Home</span>
         </motion.button>
 
-        {/* Progress Steps */}
         <div className="mb-12">
           <div className="flex items-center justify-between relative">
-            {/* Progress Line */}
             <div className="absolute top-6 left-0 right-0 h-0.5 bg-slate-200 dark:bg-slate-700 -z-10" />
             <motion.div 
               className="absolute top-6 left-0 h-0.5 bg-gradient-to-r from-indigo-600 to-purple-600 -z-10"
@@ -184,7 +181,6 @@ export default function RegistrationForm({ onSuccess, onBack }: RegistrationForm
           </div>
         </div>
 
-        {/* Form Card */}
         <motion.div 
           className="card p-8"
           initial={{ opacity: 0, y: 20 }}
@@ -299,7 +295,6 @@ export default function RegistrationForm({ onSuccess, onBack }: RegistrationForm
             )}
           </AnimatePresence>
 
-          {/* Navigation Buttons */}
           <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-100 dark:border-slate-700">
             <button
               onClick={handlePrev}
