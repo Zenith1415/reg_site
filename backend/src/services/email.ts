@@ -9,34 +9,44 @@ async function getTransporter(): Promise<nodemailer.Transporter> {
     return transporter;
   }
 
+  const smtpUser = process.env.SMTP_USER?.trim();
+  const smtpPass = process.env.SMTP_PASS?.trim();
+
   // If no SMTP credentials provided, create Ethereal test account
-  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-    console.log('📧 Creating Ethereal test email account...');
-    const testAccount = await nodemailer.createTestAccount();
-    
-    console.log(`
-    📬 Ethereal Test Email Account Created:
-    ────────────────────────────────────────
-    User: ${testAccount.user}
-    Pass: ${testAccount.pass}
-    
-    View sent emails at: https://ethereal.email
-    Login with the credentials above to see emails
-    ────────────────────────────────────────
-    `);
+  if (!smtpUser || !smtpPass) {
+    console.log('📧 No SMTP credentials found. Creating Ethereal test email account...');
+    try {
+      const testAccount = await nodemailer.createTestAccount();
+      
+      console.log(`
+      📬 Ethereal Test Email Account Created:
+      ────────────────────────────────────────
+      User: ${testAccount.user}
+      Pass: ${testAccount.pass}
+      
+      View sent emails at: https://ethereal.email
+      Login with the credentials above to see emails
+      ────────────────────────────────────────
+      `);
 
-    transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      secure: false,
-      auth: {
-        user: testAccount.user,
-        pass: testAccount.pass,
-      },
-    });
+      transporter = nodemailer.createTransport({
+        host: 'smtp.ethereal.email',
+        port: 587,
+        secure: false,
+        auth: {
+          user: testAccount.user,
+          pass: testAccount.pass,
+        },
+      });
 
-    return transporter;
+      return transporter;
+    } catch (error) {
+      console.error('Failed to create test account:', error);
+      throw error;
+    }
   }
+
+  console.log(`📧 Using SMTP server: ${process.env.SMTP_HOST}`);
 
   // Use provided SMTP credentials
   transporter = nodemailer.createTransport({
@@ -44,8 +54,8 @@ async function getTransporter(): Promise<nodemailer.Transporter> {
     port: parseInt(process.env.SMTP_PORT || '587'),
     secure: false,
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      user: smtpUser,
+      pass: smtpPass,
     },
   });
 
